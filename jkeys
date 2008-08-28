@@ -9,7 +9,6 @@ if len(sys.argv) > 2:
 
     conf = sys.argv[1]
     j = JKeys(conf)
-    j.debug = True
     j.run()
 
     # start application
