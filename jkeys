@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import sys
+import subprocess
+from joystick import JKeys 
+
+# get the config file
+if len(sys.argv) > 2:
+
+    conf = sys.argv[1]
+    j = JKeys(conf)
+    j.debug = True
+    j.run()
+
+    # start application
+    sys.exit(subprocess.call(sys.argv[2:]))
+
+else:
+	print "usage: jkeys joystick.conf application [params]"
