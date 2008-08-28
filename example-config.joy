@@ -5,10 +5,10 @@
         
         <button number="0" key="Space" />
         <button number="1" key="Return" />
-        <button number="2" key="v" />
+        <button number="2" key="a" />
         <button number="3" key="b" />
         <button number="4" key="c" />
-        <button number="5" key="cz" />
+        <button number="5" key="d" />
         <button number="6" key="z" />
         <button number="7" key="x" />
         <button number="9" key="Escape" />
