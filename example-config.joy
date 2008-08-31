@@ -1,7 +1,7 @@
 <config>
     <joystick id="0">
         <axis number="0" low="Left" high="Right" />
-        <axis number="1" low="Down" high="Up" />
+        <axis number="1" low="Up" high="Down" />
         
         <button number="0" key="Space" />
         <button number="1" key="Return" />
@@ -13,6 +13,18 @@
         <button number="7" key="x" />
         <button number="9" key="Escape" />
         <button number="10" key="p" />
-        
     </joystick>
+    
+    
+    <remote>
+        <button code="OK" key="Return" />
+        <button code="Stop" key="Escape" /> 
+        <button code="Pause" key="p" /> 
+        
+        <button code="Up" key="Up" />
+        <button code="Down" key="Down" />
+        <button code="Right" key="Right" />
+        <button code="Left" key="Left" />      
+    </remote>
+    
 </config>

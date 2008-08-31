@@ -1,5 +1,5 @@
 
-import pygame
+
 from xml.dom.minidom import *
 
 from threads import threaded
@@ -9,6 +9,10 @@ class JoyStickAxis():
     def __init__(self, lowKey, highKey):
         self.low = lowKey
         self.high = highKey
+	self.low_active = False	
+	self.high_active = False	
+
+
 
 class JoyStick():
     def __init__(self):
@@ -16,25 +20,19 @@ class JoyStick():
         self.buttons = { }
         
     def print_info(self):
-        print "== Joystick %s ========================" % self.number
-        for axis in self.axis:
-            print " - axis %s direction low mapped to key %s" % (self.axis[axis].number, self.axis[axis].low)
-            print " - axis %s direction high mapped to key %s" % (self.axis[axis].number, self.axis[axis].high)
+        print "Joystick mappings found : "
+        for axis in self.axis.keys():
+            print " - axis %s direction low mapped to key %s" % (axis, self.axis[axis].low)
+            print " - axis %s direction high mapped to key %s" % (axis, self.axis[axis].high)
             
         for key in self.buttons:
             print " - button %s mapped to key %s" % (key, self.buttons[key])
     
 class JKeys:
-    def __init__(self, conf):
+    def __init__(self, document):
     
         self.joysticks = {}
-    
-        # read config from xml doc
-        f = open(conf, "r")
-        xml = f.read()
-        f.close()
-        document = parseString(xml)
-    
+
         for joy_node in document.getElementsByTagName("joystick"):
             joy = JoyStick()
 
@@ -46,8 +44,15 @@ class JKeys:
                 joy.buttons[button_node.getAttribute("number")] = button_node.getAttribute("key")
             
             self.joysticks[int(joy_node.getAttribute("id"))] = joy
+            
+       
+
+            joy.print_info()
  
-        
+        try:
+            import pygame
+        except:
+            print "You need to install pygame to capture joystick controls" 
         pygame.init()
         
 
@@ -68,6 +73,7 @@ class JKeys:
     def run(self):
     
         if self.nbJoy != 0:
+            import pygame
             pygame.display.init()
             pygame.time.set_timer(1, 100)
             capture_events = [pygame.JOYBUTTONDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONUP, pygame.JOYHATMOTION]
@@ -109,24 +115,32 @@ class JKeys:
                         if joy.axis.has_key(axis_number):
                         
                             axis = joy.axis[axis_number]
-                            print axis.high
+    
                             if ev.value < 0:
                                 if self.debug: print "Button down : " + axis.low
                                 x.SendKeyPress( axis.low )
+				axis.low_active = True
                             
                             elif ev.value > 0:
                                 if self.debug: print "Button down : " + axis.high
                                 x.SendKeyPress( axis.high )
+				axis.high_active = True
                             
                             else:
-                                if self.debug: print "Button up : " + axis.low
-                                if self.debug: print "Button up : " + axis.high
-                                x.SendKeyRelease( axis.high )
-                                x.SendKeyRelease( axis.low )
+				if axis.low_active:
+					if self.debug: print "Button up : " + axis.low
+					x.SendKeyRelease( axis.low )
+					axis.low_active = False
+                                if axis.high_active:
+	                                if self.debug: print "Button up : " + axis.high
+                                	x.SendKeyRelease( axis.high )
+					axis.high_active = False
+                                
 
             pygame.display.quit()
             return res
 
     def __del__(self):
+        import pygame
         pygame.quit()
  
