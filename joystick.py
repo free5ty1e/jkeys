@@ -4,6 +4,7 @@ from xml.dom.minidom import *
 
 from threads import threaded
 from xkeys import XKeys
+from mouse import mouseKeys
 
 class JoyStickAxis():
     def __init__(self, lowKey, highKey):
@@ -78,10 +79,29 @@ class JKeys:
             pygame.time.set_timer(1, 100)
             capture_events = [pygame.JOYBUTTONDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONUP, pygame.JOYHATMOTION]
             x = XKeys()
+            mouse = {}
             
             # clear out all pre existing pygame events else we get 1 of each
             pygame.event.clear()
             
+            def key_press( key ):
+                if key.lower().startswith("mouse_"):
+                    key = key.split("_")[1]
+                    if not mouse.has_key(key):
+                        mouse[key] = mouseKeys()
+                    else:
+                         x.SendKeyRelease( key )
+                    mouse[key].StartMouseMove(key)
+                else:
+                    x.SendKeyPress( key )
+                 
+            def key_release( key ):
+                if key.lower().startswith("mouse_"):
+                    key = key.split("_")[1]
+                    if mouse.has_key(key):
+                        mouse[key].StopMouseMove()
+                else:
+                    x.SendKeyRelease( key )
             
             while True:
                 pygame.event.pump()
@@ -100,13 +120,13 @@ class JKeys:
                         if joy.buttons.has_key(button):
                             key_code = joy.buttons[button]
                             if self.debug: print "Button down : " + key_code
-                            x.SendKeyPress( key_code )
+                            key_press( key_code )
                     elif ev.type == pygame.JOYBUTTONUP:
                         button = str(ev.button)
                         if joy.buttons.has_key(button):
                             key_code = joy.buttons[button]
                             if self.debug: print "Button up : " + key_code
-                            x.SendKeyRelease( key_code )
+                            key_release( key_code )
                         
                       
                     elif ev.type == pygame.JOYAXISMOTION:
@@ -118,23 +138,23 @@ class JKeys:
     
                             if ev.value < 0:
                                 if self.debug: print "Button down : " + axis.low
-                                x.SendKeyPress( axis.low )
-				axis.low_active = True
+                                key_press( axis.low )
+                                axis.low_active = True
                             
                             elif ev.value > 0:
                                 if self.debug: print "Button down : " + axis.high
-                                x.SendKeyPress( axis.high )
-				axis.high_active = True
+                                key_press( axis.high )
+                                axis.high_active = True
                             
                             else:
-				if axis.low_active:
-					if self.debug: print "Button up : " + axis.low
-					x.SendKeyRelease( axis.low )
-					axis.low_active = False
+                                if axis.low_active:
+                                    if self.debug: print "Button up : " + axis.low
+                                    key_release( axis.low )
+                                    axis.low_active = False
                                 if axis.high_active:
-	                                if self.debug: print "Button up : " + axis.high
-                                	x.SendKeyRelease( axis.high )
-					axis.high_active = False
+                                    if self.debug: print "Button up : " + axis.high
+                                    key_release( axis.high )
+                                    axis.high_active = False
                                 
 
             pygame.display.quit()

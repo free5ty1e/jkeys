@@ -1,0 +1,30 @@
+<config>
+    <joystick id="0">
+        <axis number="0" low="Mouse_Left" high="Mouse_Right" />
+        <axis number="1" low="Mouse_Up" high="Mouse_Down" />
+        
+        <button number="0" key="Mouse_click1" />
+        <button number="1" key="mouse_click2" />
+        <button number="2" key="a" />
+        <button number="3" key="b" />
+        <button number="4" key="c" />
+        <button number="5" key="d" />
+        <button number="6" key="z" />
+        <button number="7" key="x" />
+        <button number="9" key="Escape" />
+        <button number="10" key="p" />
+    </joystick>
+    
+    
+    <remote>
+        <button code="OK" key="Return" />
+        <button code="Stop" key="Escape" /> 
+        <button code="Pause" key="p" /> 
+        
+        <button code="Up" key="Up" />
+        <button code="Down" key="Down" />
+        <button code="Right" key="Right" />
+        <button code="Left" key="Left" />      
+    </remote>
+    
+</config>

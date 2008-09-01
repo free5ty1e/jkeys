@@ -15,6 +15,7 @@ class XKeys(object):
 			self.__Xtst.XTestFakeKeyEvent(self.__dpy, code, False, 0)
 			self.__Xlib.XFlush(self.__dpy)
 
+
 	def SendKeyPress(self, key):
 		sym = self.__Xlib.XStringToKeysym(str(key))
 		code = self.__Xlib.XKeysymToKeycode(self.__dpy, sym)
@@ -26,3 +27,11 @@ class XKeys(object):
 		code = self.__Xlib.XKeysymToKeycode(self.__dpy, sym)
 		self.__Xtst.XTestFakeKeyEvent(self.__dpy, code, False, 0)
 		self.__Xlib.XFlush(self.__dpy)
+		
+	def SendMouseButtonPress(self, button):
+	    self.__Xtst.XTestFakeButtonEvent(self.__dpy,button,1, 10);
+	    self.__Xlib.XFlush(self.__dpy)
+	    
+	def SendMouseButtonRelease(self, button):
+	    self.__Xtst.XTestFakeButtonEvent(self.__dpy,button,0, 10);
+	    self.__Xlib.XFlush(self.__dpy)	    
