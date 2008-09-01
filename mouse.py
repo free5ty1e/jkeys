@@ -8,7 +8,7 @@ class mouseKeys():
     def __init__(self):
         self.__run = False
         self.__display = Xlib.display.Display()
-        self.step = 2
+        self.step = 1
         self.accleration_factor = 5
         self.__button = None
         self.__x = XKeys()

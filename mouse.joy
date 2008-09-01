@@ -4,7 +4,7 @@
         <axis number="1" low="Mouse_Up" high="Mouse_Down" />
         
         <button number="0" key="Mouse_click1" />
-        <button number="1" key="mouse_click2" />
+        <button number="1" key="mouse_click3" />
         <button number="2" key="a" />
         <button number="3" key="b" />
         <button number="4" key="c" />
